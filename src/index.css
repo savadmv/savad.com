@@ -7,32 +7,75 @@ html {
 }
 
 body {
-  @apply text-gray-900 antialiased;
+  @apply bg-background text-text font-sans antialiased;
+  /* Use the defined sans-serif font */
+  /* Increased line height for better readability in minimalist design */
+  @apply leading-relaxed;
 }
 
-/* Smooth transition for navigation highlighting */
-.nav-link {
-  @apply transition-all duration-200;
+/* Minimalist Navigation highlighting */
+.nav-link-active {
+  /* Subtle indication for active link, perhaps just a change in weight or a very fine underline */
+  @apply font-semibold text-accent;
+  /* Or: @apply border-b border-accent; */
 }
 
-/* Form input focus styles */
-input:focus, textarea:focus {
-  @apply outline-none ring-2 ring-indigo-500 border-transparent;
+.nav-link-inactive {
+  @apply text-muted-text hover:text-accent transition-colors duration-150;
 }
 
-/* Custom scrollbar */
+/* Minimalist Form input focus styles */
+input,
+textarea {
+  @apply border border-border-color rounded-md;
+  /* Subtle borders */
+}
+
+input:focus,
+textarea:focus {
+  @apply outline-none ring-1 ring-accent border-accent;
+  /* Very subtle ring */
+}
+
+/* Keep scrollbar minimal or use browser default */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100;
+  @apply bg-transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 rounded-full;
+  @apply bg-border-color rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500;
+  @apply bg-muted-text;
+}
+
+/* Minimalist Button Styles */
+.btn-minimal {
+  @apply bg-accent text-background px-5 py-2.5 rounded-md text-sm font-medium tracking-wide hover:bg-accent-hover transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-40;
+}
+
+.btn-minimal-outline {
+  @apply border border-accent text-accent px-5 py-2.5 rounded-md text-sm font-medium tracking-wide hover:bg-accent hover:text-background transition-colors duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-accent focus:ring-opacity-40;
+}
+
+/* Section defaults for minimalist layout */
+.section-padding {
+  @apply py-24 md:py-32;
+  /* Generous padding */
+}
+
+.container-max {
+  @apply max-w-5xl mx-auto px-6;
+  /* Slightly reduced max-width for focus, adjust as needed */
+}
+
+.tech-icon-minimal {
+  @apply w-4 h-4 inline-block mr-1.5 text-muted-text;
+  /* Smaller, more subtle icons */
 }
