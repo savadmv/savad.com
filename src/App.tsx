@@ -1,13 +1,14 @@
 import React from 'react';
-import { Menu, X, Linkedin, Mail, Github, ExternalLink, ChevronDown } from 'lucide-react';
+import { Linkedin, Mail, Github, ExternalLink, ChevronDown, Menu, X, Briefcase, Zap, Layers, Database, Cloud, Cpu, BarChart2, AlertTriangle, GitBranch, Brain } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import yourImage from './assets/pro_pic.jpeg'; // Add this line
-import hrvstImage from './assets/hrvst_thumb.png'; // Add this line
-import bbImage from './assets/bb_thumb.png'; // Add this line
-import jerin from './assets/jerin.jpeg'; // Add this line
-import manoj from './assets/manoj.jpeg'; // Add this line
+import yourImage from './assets/pro_pic.jpeg';
+import hrvstImage from './assets/hrvst_thumb.png';
+import bbImage from './assets/bb_thumb.png';
+import jerin from './assets/jerin.jpeg';
+import manoj from './assets/manoj.jpeg';
 import peculiar from './assets/peculiar.jpeg';
-import medium_post from './assets/medium_post.webp' // Add this line
+import medium_post from './assets/medium_post.webp';
+
 function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -15,19 +16,14 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = document.querySelectorAll('section');
-      const scrollPosition = window.scrollY + 100;
+      const scrollPosition = window.scrollY + (window.innerHeight * 0.4);
 
       sections.forEach((section) => {
-        const top = section.offsetTop;
-        const height = section.offsetHeight;
-        const id = section.getAttribute('id') || '';
-
-        if (scrollPosition >= top && scrollPosition < top + height) {
-          setActiveSection(id);
+        if (section.offsetTop <= scrollPosition && (section.offsetTop + section.offsetHeight) > scrollPosition) {
+          setActiveSection(section.id);
         }
       });
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -42,65 +38,80 @@ function App() {
 
   const navLinks = [
     { id: 'home', label: 'Home' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'endorsements', label: 'Endorsements' },
+    { id: 'notable-products', label: 'Products' },
     { id: 'articles', label: 'Articles' },
-    { id: 'certifications', label: 'Certifications' },
-    { id: 'contact', label: 'Contact' },
+    { id: 'endorsements', label: 'Endorsements' }, // Contact form replaced by Endorsements
   ];
 
+  const hrvstTechStack = [
+    { name: 'Dart', icon: <Cpu className="tech-icon-minimal" /> },
+    { name: 'Firebase', icon: <Database className="tech-icon-minimal" /> },
+    { name: 'GraphQL', icon: <GitBranch className="tech-icon-minimal" /> },
+    { name: 'AWS Amplify', icon: <Cloud className="tech-icon-minimal" /> },
+    { name: 'BLoC', icon: <Layers className="tech-icon-minimal" /> },
+    { name: 'Clean Arch.', icon: <Zap className="tech-icon-minimal" /> }
+  ];
+
+  const beastBurtTechStack = [
+    { name: 'FB Analytics', icon: <BarChart2 className="tech-icon-minimal" /> },
+    { name: 'Crashlytics', icon: <AlertTriangle className="tech-icon-minimal" /> },
+    { name: 'RestAPI', icon: <Zap className="tech-icon-minimal" /> },
+    { name: 'Clean Arch.', icon: <Layers className="tech-icon-minimal" /> },
+    { name: 'BLoC', icon: <Brain className="tech-icon-minimal" /> }
+  ];
+
+  const endorsementsData = [
+    { name: "Manoj Harisankar", title: "CEO, Fegno", quote: "An exceptional mobile developer who consistently delivers clean, maintainable code. Their expertise in Flutter has been invaluable to our team's success.", image: manoj },
+    { name: "Jerin K", title: "Senior Software Engineer, IBM", quote: "Their deep understanding of mobile architecture and state management patterns has elevated our entire development team's capabilities.", image: jerin },
+    { name: "Peculiar Ediomo", title: "Product Manager, The Zig", quote: "A collaborative team player with excellent problem-solving skills. Their contributions to our Flutter projects have consistently exceeded expectations.", image: peculiar }
+  ];
+
+  const certificationsData = [
+    { title: "Azure AI Engineer Associate", description: "Microsoft Certified professional with expertise in Azure AI solutions." },
+    { title: "Fabric Analytics Engineer Associate", description: "Certified in implementing and managing analytics solutions using Microsoft Fabric." }
+  ];
+
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Navigation */}
-      <nav className="fixed w-full bg-white shadow-sm z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex items-center">
-              <span className="text-xl font-bold text-primary-600">Savad M V</span>
-            </div>
-            
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+    <div className="bg-background text-text selection:bg-accent selection:text-background">
+      <nav className="fixed w-full bg-background/80 backdrop-blur-md z-40 border-b border-border-color/50">
+        <div className="container-max">
+          <div className="flex justify-between h-16 md:h-20 items-center">
+            <button onClick={() => scrollToSection('home')} className="text-lg font-semibold tracking-tight text-accent hover:opacity-75 transition-opacity">
+              Savad M V
+            </button>
+            <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`${
-                    activeSection === link.id
-                      ? 'text-primary-600 border-b-2 border-primary-600'
-                      : 'text-gray-500 hover:text-primary-700'
-                  } px-1 py-2 text-sm font-medium transition-colors duration-200`}
+                  className={`text-sm lg:text-base ${activeSection === link.id ? 'nav-link-active' : 'nav-link-inactive'
+                    }`}
                 >
                   {link.label}
                 </button>
               ))}
             </div>
-
-            {/* Mobile menu button */}
             <div className="md:hidden flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-500 hover:text-primary-700"
+                className="text-muted-text hover:text-accent p-2"
+                aria-label="Toggle menu"
               >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
               </button>
             </div>
           </div>
         </div>
-
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white">
+          <div className="md:hidden bg-background border-t border-border-color">
+            <div className="container-max py-4 space-y-2">
               {navLinks.map((link) => (
                 <button
                   key={link.id}
                   onClick={() => scrollToSection(link.id)}
-                  className={`${
-                    activeSection === link.id
-                      ? 'text-primary-600 bg-gray-50'
-                      : 'text-gray-500 hover:text-primary-700 hover:bg-gray-50'
-                  } block px-3 py-2 rounded-md text-base font-medium w-full text-left`}
+                  className={`block w-full text-left px-3 py-2 rounded-md text-base ${activeSection === link.id ? 'bg-subtle-bg text-accent font-medium' : 'text-muted-text hover:text-accent hover:bg-subtle-bg'
+                    }`}
                 >
                   {link.label}
                 </button>
@@ -110,314 +121,204 @@ function App() {
         )}
       </nav>
 
-      {/* Main Content */}
-      <main className="pt-16">
-        {/* Hero Section */}
-        <section id="home" className="min-h-screen flex items-center bg-gradient-to-br from-primary-50 to-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                  Crafting Exceptional Mobile Experiences
+      <main className="pt-16 md:pt-20">
+        <section id="home" className="min-h-[calc(100vh-4rem)] md:min-h-[calc(100vh-5rem)] flex items-center section-padding bg-gradient-to-br from-background to-subtle-bg/30 relative">
+          <div className="container-max text-center md:text-left">
+            <div className="grid md:grid-cols-5 gap-10 items-center">
+              <div className="md:col-span-3">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-text mb-6 !leading-tight tracking-tighter">
+                  Crafting Mobile Experiences.
                 </h1>
-                <p className="text-lg text-gray-600 mb-8">
-                  Freelance Mobile Application Developer specializing in Flutter, 
-                  turning innovative ideas into high-performance, user-friendly applications.
+                <p className="text-lg lg:text-xl text-muted-text mb-10 max-w-xl mx-auto md:mx-0">
+                  I'm Savad, a Mobile Developer specializing in Flutter, available for full-time and freelance opportunities. I turn ideas into performant, user-friendly applications.
                 </p>
-                <div className="flex space-x-4">
-                  <button
-                    onClick={() => scrollToSection('contact')}
-                    className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg transition-colors duration-200"
-                  >
+                <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                  <button onClick={() => scrollToSection('endorsements')} className="btn-minimal"> {/* Updated to scroll to endorsements as it has contact info */}
                     Get in Touch
                   </button>
-                  <button
-                    onClick={() => scrollToSection('projects')}
-                    className="border border-primary-600 text-primary-600 hover:bg-primary-50 px-6 py-3 rounded-lg transition-colors duration-200"
-                  >
-                    View Projects
+                  <button onClick={() => scrollToSection('notable-products')} className="btn-minimal-outline">
+                    View Products
                   </button>
                 </div>
               </div>
-              <div className="relative">
-                <div className="aspect-square rounded-2xl bg-gray-200 flex items-center justify-center">
-                  <img src={yourImage} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
-                </div>
+              <div className="md:col-span-2 flex justify-center md:justify-end order-first md:order-last">
+                <img
+                  src={yourImage}
+                  alt="Savad M V"
+                  className="w-48 h-48 sm:w-60 sm:h-60 lg:w-72 lg:h-72 object-cover rounded-full shadow-2xl border-4 border-background"
+                />
               </div>
+            </div>
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 md:bottom-16">
+              <button onClick={() => scrollToSection('notable-products')} aria-label="Scroll to products">
+                <ChevronDown size={30} className="text-muted-text hover:text-accent animate-bounce transition-colors" />
+              </button>
             </div>
           </div>
         </section>
 
-        {/* Projects Section */}
-        <section id="projects" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Featured Projects</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Hrvst App */}
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="aspect-video bg-gray-200 flex items-center justify-center">
-                  <img src={hrvstImage} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Hrvst - E-commerce App</h3>
-                  <p className="text-gray-600 mb-4">
-                    Developed a comprehensive e-commerce solution for a US-based client, featuring seamless product browsing,
-                    cart management, and secure checkout integration.
-                  </p>
-                  <div className="flex justify-between items-center">
-                    <a
-                      href="https://www.hrvst.market/"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-primary-600 hover:text-primary-700"
-                    >
-                      Visit Website <ExternalLink size={16} className="ml-1" />
-                    </a>
-                    <span className="text-sm text-gray-500">Status: Under Development</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Beast Burst App */}
-              <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div className="aspect-video bg-gray-200 flex items-center justify-center">
-                  <img src={bbImage} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">Beast Burst App</h3>
-                  <p className="text-gray-600 mb-4">
-                    Rebuilt and optimized a Flutter application, resulting in improved performance
-                    and user experience. Now boasting over 10,000 global downloads.
-                  </p>
-                  <a
-                    href="https://play.google.com/store/apps/details?id=com.beastburst.mobileapp"
-                    className="inline-flex items-center text-primary-600 hover:text-primary-700"
-                  >
-                    View on Play Store <ExternalLink size={16} className="ml-1" />
+        <section id="notable-products" className="section-padding bg-background">
+          <div className="container-max">
+            <header className="text-center mb-16 md:mb-20">
+              <h2 className="text-3xl sm:text-4xl font-bold text-text mb-3 tracking-tight">Notable Products</h2>
+              <p className="text-lg text-muted-text max-w-2xl mx-auto">A selection of products I've developed and contributed to.</p>
+            </header>
+            <div className="grid md:grid-cols-2 gap-x-8 gap-y-12">
+              {[
+                { title: "Hrvst - E-commerce App", image: hrvstImage, description: "A comprehensive e-commerce solution for a US-based client, featuring seamless product Browse, cart management, and secure checkout.", tech: hrvstTechStack, liveLink: "https://www.hrvst.market/", status: "Under Development" },
+                { title: "Beast Burst App", image: bbImage, description: "Rebuilt and optimized a Flutter application, improving performance and user experience. Over 10,000 global downloads.", tech: beastBurtTechStack, storeLink: "https://play.google.com/store/apps/details?id=com.beastburst.mobileapp" }
+              ].map((product) => (
+                <div key={product.title} className="bg-subtle-bg/50 rounded-lg overflow-hidden border border-border-color group hover:shadow-xl transition-shadow duration-300">
+                  <a href={product.liveLink || product.storeLink} target="_blank" rel="noopener noreferrer" className="block overflow-hidden aspect-[16/10]">
+                    <img src={product.image} alt={product.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                   </a>
+                  <div className="p-6 md:p-8">
+                    <h3 className="text-xl lg:text-2xl font-semibold text-text mb-2 tracking-tight group-hover:text-accent transition-colors">{product.title}</h3>
+                    <p className="text-muted-text mb-5 text-sm leading-relaxed">{product.description}</p>
+                    <div className="mb-5">
+                      <h4 className="text-xs font-semibold text-muted-text uppercase tracking-wider mb-2.5">Technologies</h4>
+                      <div className="flex flex-wrap gap-x-3 gap-y-1.5">
+                        {product.tech.map(t => (
+                          <span key={t.name} className="flex items-center text-xs text-muted-text group-hover:text-text transition-colors">
+                            {t.icon} {t.name}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between pt-4 border-t border-border-color/50">
+                      {product.liveLink && (
+                        <a href={product.liveLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm text-accent hover:underline">
+                          Visit Website <ExternalLink size={14} className="ml-1.5" />
+                        </a>
+                      )}
+                      {product.storeLink && (
+                        <a href={product.storeLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center text-sm text-accent hover:underline">
+                          View on Play Store <ExternalLink size={14} className="ml-1.5" />
+                        </a>
+                      )}
+                      {product.status && <span className="text-xs text-muted-text opacity-80">{product.status}</span>}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="articles" className="section-padding bg-subtle-bg/50">
+          <div className="container-max">
+            <header className="text-center mb-16 md:mb-20">
+              <h2 className="text-3xl sm:text-4xl font-bold text-text mb-3 tracking-tight">Insights & Articles</h2>
+              <p className="text-lg text-muted-text max-w-2xl mx-auto">Exploring ideas and sharing knowledge on mobile development and tech.</p>
+            </header>
+            <div className="grid md:grid-cols-1 gap-8 max-w-3xl mx-auto">
+              <a href="https://medium.com/p/4158391bcb7c" target="_blank" rel="noopener noreferrer" className="block bg-background p-6 md:p-8 rounded-lg border border-border-color hover:shadow-xl hover:border-accent/30 transition-all duration-300 group">
+                <div className="flex flex-col sm:flex-row gap-6 items-start">
+                  <img src={medium_post} alt="Medium Article Thumbnail" className="w-full sm:w-40 h-auto sm:h-28 object-cover rounded-md shadow-sm flex-shrink-0" />
+                  <div>
+                    <h3 className="text-lg lg:text-xl font-semibold text-text mb-2 group-hover:text-accent transition-colors">
+                      Resolving Image Loading Issues in Flutter Web Canvaskit Renderer...
+                    </h3>
+                    <p className="text-sm text-muted-text mb-3 leading-relaxed line-clamp-2">
+                      A deep dive into troubleshooting and fixing common image loading problems when using Flutter's Canvaskit renderer for web applications.
+                    </p>
+                    <span className="text-xs text-accent font-medium inline-flex items-center">
+                      Read on Medium <ExternalLink size={12} className="ml-1" />
+                    </span>
+                  </div>
+                </div>
+              </a>
+              <div className="mt-8 pt-8 border-t border-border-color">
+                <h4 className="text-center text-sm uppercase tracking-wider text-muted-text mb-6">From LinkedIn</h4>
+                <div className="grid sm:grid-cols-2 gap-6">
+                  {[
+                    { text: "Onboarding Screen using ViewPager and Dots Indicator in Flutter...", link: 'https://www.linkedin.com/feed/update/urn:li:activity:6770272898402934784/' },
+                    { text: "Satisfaction when your client’s app goes live on the Play Store...", link: 'https://www.linkedin.com/feed/update/urn:li:activity:6691707057978052608/' }
+                  ].map(post => (
+                    <a
+                      key={post.link}
+                      href={post.link} target="_blank" rel="noopener noreferrer"
+                      className="block bg-background p-4 rounded-md border border-border-color hover:shadow-lg hover:border-accent/20 transition-all duration-200 group"
+                    >
+                      <p className="text-sm text-muted-text mb-2 group-hover:text-text transition-colors line-clamp-3">{post.text}</p>
+                      <span className="text-xs text-accent font-medium inline-flex items-center">
+                        View Post <ExternalLink size={12} className="ml-1" />
+                      </span>
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Endorsements Section */}
-        <section id="endorsements" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Professional Endorsements</h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 mr-4">
-                    <img src={manoj} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
+        <section id="endorsements" className="section-padding bg-background"> {/* Formerly contact section */}
+          <div className="container-max">
+            <header className="text-center mb-16 md:mb-20">
+              <h2 className="text-3xl sm:text-4xl font-bold text-text mb-3 tracking-tight">What Others Say</h2>
+              <p className="text-lg text-muted-text max-w-xl mx-auto">Professional endorsements from colleagues and clients.</p>
+            </header>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {endorsementsData.map(endorsement => (
+                <div key={endorsement.name} className="bg-subtle-bg/50 p-6 md:p-8 rounded-lg border border-border-color text-center md:text-left hover:shadow-xl transition-shadow duration-300">
+                  <div className="flex flex-col md:flex-row items-center mb-4">
+                    <img
+                      src={endorsement.image}
+                      alt={endorsement.name}
+                      className="w-16 h-16 object-cover rounded-full mr-0 md:mr-4 mb-3 md:mb-0 border-2 border-background shadow-sm"
+                    />
+                    <div>
+                      <h3 className="font-semibold text-text text-md">{endorsement.name}</h3>
+                      <p className="text-xs text-muted-text">{endorsement.title}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Manoj Harisankar</h3>
-                    <p className="text-sm text-gray-500">Senior Software Engineer, TechCorp</p>
-                  </div>
+                  <p className="text-sm text-muted-text italic leading-relaxed">"{endorsement.quote}"</p>
                 </div>
-                <p className="text-gray-600">
-                  "An exceptional mobile developer who consistently delivers clean, maintainable code. Their expertise in Flutter has been invaluable to our team's success."
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 mr-4">
-                    <img src={jerin} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Jerin K</h3>
-                    <p className="text-sm text-gray-500">Lead Developer, InnovateTech</p>
-                  </div>
-                </div>
-                <p className="text-gray-600">
-                  "Their deep understanding of mobile architecture and state management patterns has elevated our entire development team's capabilities."
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 mr-4">
-                    <img src={peculiar} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">Peculiar Ediomo</h3>
-                    <p className="text-sm text-gray-500">Technical Lead, MobileFirst</p>
-                  </div>
-                </div>
-                <p className="text-gray-600">
-                  "A collaborative team player with excellent problem-solving skills. Their contributions to our Flutter projects have consistently exceeded expectations."
-                </p>
-              </div>
+              ))}
             </div>
-          </div>
-        </section>
 
-        {/* Articles & Posts Section */}
-        <section id="articles" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Articles & Posts</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              {/* Medium Article */}
-              <div className="bg-gray-50 rounded-xl p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">Latest on Medium</h3>
-                <div className="aspect-video bg-gray-200 mb-4 rounded-lg">
-                  <img src={medium_post} alt="Profile" className="w-full h-full object-cover rounded-2xl" />
+            {/* Certifications (Optional integration) */}
+            {certificationsData.length > 0 && (
+              <div className="mt-16 pt-12 border-t border-border-color">
+                <h3 className="text-2xl font-semibold text-text mb-8 text-center tracking-tight">Certifications</h3>
+                <div className="grid sm:grid-cols-2 gap-x-8 gap-y-6 max-w-2xl mx-auto">
+                  {certificationsData.map(cert => (
+                    <div key={cert.title} className="bg-subtle-bg/50 p-5 rounded-lg border border-border-color">
+                      <h4 className="font-semibold text-text mb-1">{cert.title}</h4>
+                      <p className="text-xs text-muted-text">{cert.description}</p>
+                    </div>
+                  ))}
                 </div>
-                <p className="text-gray-600 mb-4">Resolving Image Loading Issues in...</p>
-                <a href="https://medium.com/p/4158391bcb7c" className="text-primary-600 hover:text-primary-700 inline-flex items-center">
-                  Read on Medium <ExternalLink size={16} className="ml-1" />
+              </div>
+            )}
+
+            {/* Contact Links */}
+            <div className="mt-20 pt-12 border-t border-border-color text-center">
+              <h3 className="text-xl lg:text-2xl font-semibold text-text mb-4 tracking-tight">Ready to collaborate?</h3>
+              <p className="text-muted-text mb-8 max-w-md mx-auto">
+                Let's discuss your project or idea. You can reach me via email or connect on my professional profiles.
+              </p>
+              <div className="flex flex-col sm:flex-row flex-wrap justify-center items-center gap-4">
+                <a href="mailto:savadmv333@gmail.com" className="btn-minimal-outline inline-flex items-center">
+                  <Mail size={16} className="mr-2" /> Email Me
+                </a>
+                <a href="https://www.linkedin.com/in/savadmv333/" target="_blank" rel="noopener noreferrer" className="btn-minimal-outline inline-flex items-center">
+                  <Linkedin size={16} className="mr-2" /> LinkedIn
+                </a>
+                <a href="https://github.com/savadmv" target="_blank" rel="noopener noreferrer" className="btn-minimal-outline inline-flex items-center">
+                  <Github size={16} className="mr-2" /> GitHub
                 </a>
               </div>
-
-              {/* LinkedIn Posts */}
-              <div className="space-y-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">Trending on LinkedIn</h3>
-                <div 
-                  className="bg-gray-50 rounded-xl p-6 cursor-pointer"
-                  onClick={() => window.open('https://www.linkedin.com/feed/update/urn:li:activity:6770272898402934784/', '_blank')}
-                >
-                  <p className="text-gray-600 mb-4">Onboarding Screen ...</p>
-                  <div className="flex items-center text-sm text-gray-500">
-                  <span>933 Reactions</span>
-                  <span className="mx-2">•</span>
-                  <span>79 Comments</span>
-                  </div>
-                </div>
-                <div
-                  className="bg-gray-50 rounded-xl p-6 cursor-pointer"
-                  onClick={() => window.open('https://www.linkedin.com/feed/update/urn:li:activity:6691707057978052608/', '_blank')}
-                >
-                  <p className="text-gray-600 mb-4">Satisfaction is ...</p>
-                  <div className="flex items-center text-sm text-gray-500">
-                    <span>27 Reactions</span>
-                    <span className="mx-2">•</span>
-                    <span>7 Comments</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Certifications Section */}
-        <section id="certifications" className="py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Certifications</h2>
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Azure AI Engineer Associate</h3>
-                <p className="text-gray-600">
-                  Microsoft Certified professional with expertise in Azure AI solutions.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-lg">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                  Fabric Analytics Engineer Associate
-                </h3>
-                <p className="text-gray-600">
-                  Certified in implementing and managing analytics solutions using Microsoft Fabric.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Contact Section */}
-        <section id="contact" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Get in Touch</h2>
-            <div className="grid md:grid-cols-2 gap-12">
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">Let's Connect</h3>
-                <p className="text-gray-600 mb-6">
-                  Looking for a mobile app developer? I'd love to hear about your project and discuss
-                  how we can work together.
-                </p>
-                <div className="space-y-4">
-                  <a
-                    href="https://www.linkedin.com/in/savadmv333/"
-                    className="flex items-center text-gray-600 hover:text-primary-600 transition-colors duration-200"
-                  >
-                    <Linkedin className="w-5 h-5 mr-2" />
-                    LinkedIn Profile
-                  </a>
-                  <a
-                    href="mailto:savadmv333@gmail.com"
-                    className="flex items-center text-gray-600 hover:text-primary-600 transition-colors duration-200"
-                  >
-                    <Mail className="w-5 h-5 mr-2" />
-                    your.email@example.com
-                  </a>
-                  <a
-                    href="https://github.com/savadmv"
-                    className="flex items-center text-gray-600 hover:text-primary-600 transition-colors duration-200"
-                  >
-                    <Github className="w-5 h-5 mr-2" />
-                    GitHub Profile
-                  </a>
-                </div>
-              </div>
-              <form className="space-y-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    rows={4}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  ></textarea>
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-lg transition-colors duration-200"
-                >
-                  Send Message
-                </button>
-              </form>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <p className="text-gray-400">© 2024 Your Name. All rights reserved.</p>
-          </div>
+      <footer className="py-10 border-t border-border-color bg-subtle-bg/30">
+        <div className="container-max text-center">
+          <p className="text-xs text-muted-text">&copy; {new Date().getFullYear()} Savad M V. Freelance Mobile Developer.</p>
         </div>
       </footer>
-
-      {/* Scroll to top button */}
-      <button
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 bg-primary-600 hover:bg-primary-700 text-white p-3 rounded-full shadow-lg transition-colors duration-200"
-      >
-        <ChevronDown className="w-6 h-6 transform rotate-180" />
-      </button>
     </div>
   );
 }
